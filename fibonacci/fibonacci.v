@@ -14,7 +14,7 @@ begin
 	fibn_minus2 <= mux2;
 end
 
-//Combinatioanal Part
+//Combinational Part
 
 //Initial reset condition is required to start the series
 assign mux1 = rst ? 4'd1 : fibn; 
