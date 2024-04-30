@@ -1,0 +1,96 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000001fdcc5f8860 .scope module, "tb_Fibonacci" "tb_Fibonacci" 2 1;
+ .timescale 0 0;
+v000001fdcc64f840_0 .var "clk", 0 0;
+v000001fdcc64f8e0_0 .net "fib_out", 3 0, L_000001fdcc6dcc10;  1 drivers
+v000001fdcc601f50_0 .var "rst", 0 0;
+S_000001fdcc6dc800 .scope module, "uut" "Fibonacci" 2 8, 3 1 0, S_000001fdcc5f8860;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst";
+    .port_info 2 /OUTPUT 4 "fib_out";
+L_000001fdcc6dcc10 .functor BUFZ 4, v000001fdcc6dc990_0, C4<0000>, C4<0000>, C4<0000>;
+L_000001fdcc64f988 .functor BUFT 1, C4<0001>, C4<0>, C4<0>, C4<0>;
+v000001fdcc5d2ff0_0 .net/2u *"_ivl_0", 3 0, L_000001fdcc64f988;  1 drivers
+L_000001fdcc64f9d0 .functor BUFT 1, C4<0000>, C4<0>, C4<0>, C4<0>;
+v000001fdcc5d2d70_0 .net/2u *"_ivl_4", 3 0, L_000001fdcc64f9d0;  1 drivers
+v000001fdcc6da000_0 .net "clk", 0 0, v000001fdcc64f840_0;  1 drivers
+v000001fdcc5f6130_0 .net "fib_out", 3 0, L_000001fdcc6dcc10;  alias, 1 drivers
+v000001fdcc6dae70_0 .net "fibn", 3 0, L_000001fdcc601910;  1 drivers
+v000001fdcc6daf10_0 .var "fibn_minus1", 3 0;
+v000001fdcc6dc990_0 .var "fibn_minus2", 3 0;
+v000001fdcc6dca30_0 .net "mux1", 3 0, L_000001fdcc601370;  1 drivers
+v000001fdcc6dcad0_0 .net "mux2", 3 0, L_000001fdcc601410;  1 drivers
+v000001fdcc6dcb70_0 .net "rst", 0 0, v000001fdcc601f50_0;  1 drivers
+E_000001fdcc6d9ca0 .event posedge, v000001fdcc6da000_0;
+L_000001fdcc601370 .functor MUXZ 4, L_000001fdcc601910, L_000001fdcc64f988, v000001fdcc601f50_0, C4<>;
+L_000001fdcc601410 .functor MUXZ 4, v000001fdcc6daf10_0, L_000001fdcc64f9d0, v000001fdcc601f50_0, C4<>;
+L_000001fdcc601910 .arith/sum 4, v000001fdcc6daf10_0, v000001fdcc6dc990_0;
+    .scope S_000001fdcc6dc800;
+T_0 ;
+    %wait E_000001fdcc6d9ca0;
+    %load/vec4 v000001fdcc6dca30_0;
+    %assign/vec4 v000001fdcc6daf10_0, 0;
+    %load/vec4 v000001fdcc6dcad0_0;
+    %assign/vec4 v000001fdcc6dc990_0, 0;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_000001fdcc5f8860;
+T_1 ;
+    %delay 5, 0;
+    %load/vec4 v000001fdcc64f840_0;
+    %inv;
+    %store/vec4 v000001fdcc64f840_0, 0, 1;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_000001fdcc5f8860;
+T_2 ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001fdcc64f840_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001fdcc601f50_0, 0, 1;
+    %delay 20, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001fdcc601f50_0, 0, 1;
+    %end;
+    .thread T_2;
+    .scope S_000001fdcc5f8860;
+T_3 ;
+    %pushi/vec4 10, 0, 32;
+T_3.0 %dup/vec4;
+    %pushi/vec4 0, 0, 32;
+    %cmp/s;
+    %jmp/1xz T_3.1, 5;
+    %jmp/1 T_3.1, 4;
+    %pushi/vec4 1, 0, 32;
+    %sub;
+    %delay 10, 0;
+    %vpi_call 2 30 "$display", "Time | clk | rst | fib_out" {0 0 0};
+    %vpi_call 2 31 "$write", "%d | %b | %b | ", $time, v000001fdcc64f840_0, v000001fdcc601f50_0 {0 0 0};
+    %vpi_call 2 32 "$write", "%d\012", v000001fdcc64f8e0_0 {0 0 0};
+    %jmp T_3.0;
+T_3.1 ;
+    %pop/vec4 1;
+    %vpi_call 2 34 "$finish" {0 0 0};
+    %end;
+    .thread T_3;
+    .scope S_000001fdcc5f8860;
+T_4 ;
+    %vpi_call 2 39 "$dumpfile", "dump.vcd" {0 0 0};
+    %vpi_call 2 40 "$dumpvars", 32'sb00000000000000000000000000000000 {0 0 0};
+    %end;
+    .thread T_4;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb.v";
+    "fibonacci.v";
